@@ -16,8 +16,8 @@ public class Compras {
     private Fornecedores id_fornecedor;
     private Funcionario id_funcionario;
     private float quantidade;
-    private float valor_unitario;
     private Date data_compra;
+    
     
     
     public int getId_compra() {
@@ -59,15 +59,7 @@ public class Compras {
     public void setQuantidade(float quantidade) {
         this.quantidade = quantidade;
     }
-
-    public float getValor_unitario() {
-        return valor_unitario;
-    }
-
-    public void setValor_unitario(float valor_unitario) {
-        this.valor_unitario = valor_unitario;
-    }
-
+    
     public Date getData_compra() {
         return data_compra;
     }
@@ -75,6 +67,4 @@ public class Compras {
     public void setData_compra(Date data_compra) {
         this.data_compra = data_compra;
     }
-
-
 }

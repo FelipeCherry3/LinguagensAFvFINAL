@@ -43,7 +43,47 @@ public class UsuarioDAO {
         stmt.executeUpdate();
     }
     
+    public void atualizaUsuario(Usuario usuario,String email) throws SQLException {
+        String query = "UPDATE usuarios SET nome =?, email=?, cpf=?, sexo=?, celular=?, senha=? WHERE email =?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setString(1,usuario.getNome());
+        stmt.setString(2, usuario.getEmail());
+        stmt.setString(3,usuario.getCpf());
+        stmt.setString(4,usuario.getSexo());
+        stmt.setString(5, usuario.getCelular());
+        stmt.setString(6,usuario.getSenha());
+        stmt.setString(7, email);
+        stmt.executeUpdate();
+    }
     
+    public Usuario buscarUsuarioPorEmail(String UEmail) throws SQLException {
+        String query = "SELECT * FROM usuarios WHERE email = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, UEmail);
+
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String nome = resultSet.getString("nome");
+            String email = resultSet.getString("email");
+            String cpf = resultSet.getString("cpf");
+            String sexo = resultSet.getString("sexo");
+            String celular = resultSet.getString("celular");
+            String senha = resultSet.getString("senha");
+
+            Usuario usuario = new Usuario();
+            usuario.setId(id);
+            usuario.setNome(nome);
+            usuario.setEmail(email);
+            usuario.setCpf(cpf);
+            usuario.setSexo(sexo);
+            usuario.setSenha(senha);
+            usuario.setCelular(celular);
+            return usuario;
+        }
+
+        return null; // Retornar null se não for encontrado nenhum funcionário com o CPF especificado
+    }
     public void excluiUsuario(int id) throws SQLException {
         String querry = "DELETE FROM  usuarios  WHERE id =? ";
         PreparedStatement statement = connection.prepareStatement(querry);

@@ -18,7 +18,7 @@ public class TestesCRUD {
     public static void main(String[] args) throws ParseException, SQLException {
         MySQL mysql = new MySQL("localhost:3306", "controltech2", "root", "Bico1346@");
         mysql.conectaBanco();
-        FornecedoresDAO fornDAO = new FornecedoresDAO(mysql);
+        FornecedoresDAO fornDAO = new FornecedoresDAO();
         
         Fornecedores for1 = new Fornecedores();
         DateUtils date = new DateUtils();

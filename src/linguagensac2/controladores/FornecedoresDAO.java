@@ -18,45 +18,50 @@ import linguagensac2.modelos.Fornecedores;
  */
 public class FornecedoresDAO {
     private Connection connection;
-    
-    public FornecedoresDAO(MySQL mysql) {
+    MySQL mysql = new MySQL("localhost:3306", "controletech3", "root", "Bico1346@");
+    public FornecedoresDAO() {
+        mysql.conectaBanco();
         this.connection = mysql.getConn();
     }
     
     public void cadastrarFornecedor(Fornecedores fornecedor) throws SQLException {
-        String querry = "INSERT INTO fornecedores (nome_fornecedor, CNPJ, descricao, data_contrato) VALUES (?,?,?,?)";
+        String querry = "INSERT INTO fornecedores (nome_fornecedor, CNPJ, descricao, data_contrato, celular, email) VALUES (?,?,?,?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(querry);
         stmt.setString(1,fornecedor.getNome_fornecedor());
         stmt.setString(2,fornecedor.getCnpj());
         stmt.setString(3,fornecedor.getDescricao());
         stmt.setDate(4,fornecedor.getData_contrato());
+        stmt.setString(5, fornecedor.getCelular());
+        stmt.setString(6,fornecedor.getEmail());
         stmt.executeUpdate();
     }
-        
-    public void excluirFornecedor(String cnpj) throws SQLException {
-        String query = "DELETE FROM fornecedores WHERE CNPJ=?";
+
+    public void excluirFornecedor(String email) throws SQLException {
+        String query = "DELETE FROM fornecedores WHERE email=?";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, cnpj);
+        statement.setString(1, email);
 
         statement.executeUpdate();
     }
     
-    public void atualizarFornecedor(Fornecedores fornecedor) throws SQLException {
-        String query = "UPDATE fornecedores SET nome_fornecedor =?, CNPJ =?, descricao =?, data_contrato =? WHERE id_fornecedor=?";
+    public void atualizarFornecedor(Fornecedores fornecedor,String email) throws SQLException {
+        String query = "UPDATE fornecedores SET nome_fornecedor =?, CNPJ =?, descricao =?, data_contrato =?, celular =?, email=? WHERE email=?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1,fornecedor.getNome_fornecedor());
         stmt.setString(2,fornecedor.getCnpj());
         stmt.setString(3,fornecedor.getDescricao());
         stmt.setDate(4,fornecedor.getData_contrato());
-        stmt.setInt(5,fornecedor.getId());
+        stmt.setString(5,fornecedor.getCelular());
+        stmt.setString(6, fornecedor.getEmail());
+        stmt.setString(7,email);
         
         stmt.executeUpdate();
     }
     
-    public Fornecedores buscarFornecedorPorId(Integer id_forn) throws SQLException {
-        String query = "SELECT * FROM fornecedores WHERE id_fornecedor = ?";
+    public Fornecedores buscarFornecedorPorEmail(String emailParam) throws SQLException {
+        String query = "SELECT * FROM fornecedores WHERE email = ?";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, id_forn);
+        statement.setString(1, emailParam);
 
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
@@ -65,6 +70,8 @@ public class FornecedoresDAO {
             String cnpj = resultSet.getString("cnpj");
             String descricao = resultSet.getString("descricao");
             java.sql.Date dataCont = resultSet.getDate("data_contrato");
+            String celular = resultSet.getString("celular");
+            String email = resultSet.getString("email");
 
 
             Fornecedores fornecedor = new Fornecedores();
@@ -73,15 +80,42 @@ public class FornecedoresDAO {
             fornecedor.setCnpj(cnpj);
             fornecedor.setDescricao(descricao);
             fornecedor.setData_contrato(dataCont);
-            
+            fornecedor.setCelular(celular);
+            fornecedor.setEmail(email);
 
             return fornecedor;
-        }
+        }    
+        return null; // Retornar null se não for encontrado nenhum funcionário com o CPF especificado        
+    }
+    public Fornecedores buscarFornPorId(int idParam) throws SQLException  {
+        String query = "SELECT * FROM fornecedores WHERE id_fornecedor = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idParam);
 
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            int id = resultSet.getInt("id_fornecedor");
+            String nome_forn = resultSet.getString("nome_fornecedor");
+            String cnpj = resultSet.getString("cnpj");
+            String descricao = resultSet.getString("descricao");
+            java.sql.Date dataCont = resultSet.getDate("data_contrato");
+            String celular = resultSet.getString("celular");
+            String email = resultSet.getString("email");
+
+
+            Fornecedores fornecedor = new Fornecedores();
+            fornecedor.setId(id);
+            fornecedor.setNome_fornecedor(nome_forn);
+            fornecedor.setCnpj(cnpj);
+            fornecedor.setDescricao(descricao);
+            fornecedor.setData_contrato(dataCont);
+            fornecedor.setCelular(celular);
+            fornecedor.setEmail(email);
+
+            return fornecedor;
+        }    
         return null; // Retornar null se não for encontrado nenhum funcionário com o CPF especificado
     }
-    
-    
     public List<Fornecedores> buscarTodosFornecedores() throws SQLException {
         List<Fornecedores> fornecedores = new ArrayList<>();
 
@@ -95,17 +129,21 @@ public class FornecedoresDAO {
             String cnpj = resultSet.getString("cnpj");
             String descricao = resultSet.getString("descricao");
             java.sql.Date dataCont = resultSet.getDate("data_contrato");
-
+            String celular = resultSet.getString("celular");
+            String email = resultSet.getString("email");
+            
             Fornecedores fornecedor = new Fornecedores();
             fornecedor.setId(id);
             fornecedor.setNome_fornecedor(nome_forn);
             fornecedor.setCnpj(cnpj);
             fornecedor.setDescricao(descricao);
             fornecedor.setData_contrato(dataCont);
+            fornecedor.setCelular(celular);
+            fornecedor.setEmail(email);
 
             fornecedores.add(fornecedor);
         }
 
-    return fornecedores;
-}
+        return fornecedores;
+    }
 }

@@ -193,7 +193,7 @@ public class telaPrincipal extends javax.swing.JFrame {
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         // TODO add your handling code here:
         Usuario novoUsuario = new Usuario();
-        MySQL mysql = new MySQL("localhost:3306", "controletech", "root", "Bico1346@");
+        MySQL mysql = new MySQL("localhost:3306", "controletech3", "root", "Bico1346@");
         mysql.conectaBanco();
         UsuarioDAO usuarioDAO = new UsuarioDAO(mysql);
         
@@ -226,19 +226,19 @@ public class telaPrincipal extends javax.swing.JFrame {
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         // TODO add your handling code here:
         Usuario usuario = new Usuario();
-        MySQL mysql = new MySQL("localhost:3306", "controletech", "root", "Bico1346@");
+        MySQL mysql = new MySQL("localhost:3306", "controletech3", "root", "Bico1346@");
         mysql.conectaBanco();
         UsuarioDAO usuarioDAO = new UsuarioDAO(mysql);
         FuncionariosTela funcionariosTela = new FuncionariosTela();
-        telaPrincipal telaPrincipal = new telaPrincipal();
         
+        TelaMenu tl = new TelaMenu();
         
         try {
             if(usuarioDAO.autenticarUsuario(txtLogin.getText(), String.valueOf(txtSenha.getPassword())) == true) {
                 JOptionPane.showMessageDialog(null,"Usuário Autenticado! Seja Bem-Vindo");
                 LimparCampos();
-                funcionariosTela.setVisible(true);
-                telaPrincipal.setVisible(false);
+                tl.setVisible(true);
+                this.setVisible(false);
                                 
             } else {
                 JOptionPane.showMessageDialog(null,"Usuário Não Autenticado!");

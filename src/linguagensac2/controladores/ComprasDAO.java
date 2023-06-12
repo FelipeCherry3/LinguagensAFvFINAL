@@ -8,33 +8,38 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
 import linguagensac2.connection.MySQL;
 import linguagensac2.modelos.Compras;
+import linguagensac2.modelos.Fornecedores;
+import linguagensac2.modelos.Funcionario;
+import linguagensac2.modelos.Produtos;
 /**
  *
  * @author Pc Elaine
  */
 public class ComprasDAO {
     private Connection connection;
+    MySQL mysql = new MySQL("localhost:3306", "controletech3", "root", "Bico1346@");
     
-    public ComprasDAO(MySQL mysql) {
+    public ComprasDAO() {
+        mysql.conectaBanco();
         this.connection = mysql.getConn();
     }
         public void cadastrarCompras(Compras compra) throws SQLException {
-        String querry = "INSERT INTO compras (id_produto, id_fornecedor, id_funcionario, quantidade, valor_unitario, data_compra) VALUES (?,?,?,?,?,?)";
+        String querry = "INSERT INTO compras (id_compra, id_produto, id_funcionario, quantidade, data_compra) VALUES (?,?,?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(querry);
-        stmt.setInt(1,compra.getId_produto().getId_produto());
-        stmt.setInt(2, compra.getId_fornecedor().getId());
+        stmt.setInt(1, compra.getId_compra());
+        stmt.setInt(2,compra.getId_produto().getId_produto());
         stmt.setInt(3,compra.getId_funcionario().getId());
         stmt.setFloat(4, compra.getQuantidade());
-        stmt.setDouble(5, compra.getValor_unitario());
-        stmt.setDate(6, compra.getData_compra());
+        stmt.setDate(5, compra.getData_compra());
         
         stmt.executeUpdate();
     }
     
     public void excluirCompra(int id) throws SQLException {
-        String query = "DELETE FROM compras WHERE id=?";
+        String query = "DELETE FROM compras WHERE id_compra=?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, id);
 
@@ -42,15 +47,13 @@ public class ComprasDAO {
     }
     
     public void atualizarCompra(Compras compra) throws SQLException {
-        String query = "UPDATE compras SET id_produto=?, id_fornecedor=?, id_funcionario=?, quantidade=?, valor_unitario=?, data_compra=?  WHERE id_compra=?";
+        String query = "UPDATE compras SET id_produto=?, id_funcionario=?, quantidade=?, data_compra=? WHERE id_compra=?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1,compra.getId_produto().getId_produto());
-        stmt.setInt(2, compra.getId_fornecedor().getId());
-        stmt.setInt(3,compra.getId_funcionario().getId());
-        stmt.setFloat(4, compra.getQuantidade());
-        stmt.setDouble(5, compra.getValor_unitario());
-        stmt.setDate(6, compra.getData_compra());
-        stmt.setInt(7,compra.getId_compra());
+        stmt.setInt(2,compra.getId_funcionario().getId());
+        stmt.setFloat(3, compra.getQuantidade());
+        stmt.setDate(4, compra.getData_compra());
+        stmt.setInt(5,compra.getId_compra());
         
         stmt.executeUpdate();
     }
@@ -59,22 +62,36 @@ public class ComprasDAO {
         String query = "SELECT * FROM compras WHERE id_compra =?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, id_compra);
-
+        
+        ProdutosDAO produtosDAO = new ProdutosDAO();
+        FuncionarioDAO funcDAO = new FuncionarioDAO();
+            
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             int id = resultSet.getInt("id_compra");
+            
+            Float qtd = resultSet.getFloat("quantidade");
+
+            java.sql.Date data_compra = resultSet.getDate("data_compra");
             int id_produto = resultSet.getInt("id_produto");
-            String nome_prod = resultSet.getString("nome_produto");
-            Float qtd = resultSet.getFloat("quantidade_produto");
-            String descricao = resultSet.getString("descricao");
-            java.sql.Date dataVal = resultSet.getDate("data_validade");
-            Double preco = resultSet.getDouble("preco");
-
-
+            int id_funcionario = resultSet.getInt("id_funcionario");
+            
             Compras compra = new Compras();
+            
             compra.setId_compra(id);
             
+            Produtos produto = produtosDAO.buscarProdutoPorId(id_produto);
+            
+            compra.setId_produto(produto);
 
+            Funcionario funcionario = funcDAO.buscarFuncionarioPorId(id_funcionario);
+            
+            compra.setId_funcionario(funcionario);
+            
+            compra.setQuantidade(qtd);
+
+            compra.setData_compra(data_compra);
+            
             return compra;
         }
 

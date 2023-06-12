@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import linguagensac2.connection.MySQL;
 import linguagensac2.modelos.Funcionario;
 
@@ -19,8 +21,10 @@ import linguagensac2.modelos.Funcionario;
 
 public class FuncionarioDAO {
     private Connection connection;
+    MySQL mysql = new MySQL("localhost:3306", "controletech3", "root", "Bico1346@");
     
-    public FuncionarioDAO(MySQL mysql) {
+    public FuncionarioDAO() {
+        mysql.conectaBanco();
         this.connection = mysql.getConn();
     }
     
@@ -142,7 +146,47 @@ public class FuncionarioDAO {
     statement.setDate(10, funcionario.getData_ingresso());
     statement.setDouble(11, funcionario.getSalario());
     statement.setString(12, funcionario.getEmail());
-
+ 
     statement.executeUpdate();
+    }
+    public List<Funcionario> buscarTodosFuncionarios() throws SQLException {
+        List<Funcionario> funcionarios = new ArrayList<>();
+
+        String query = "SELECT * FROM funcionarios ORDER BY nome";
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String nome_func = resultSet.getString("nome");
+            String email = resultSet.getString("email");
+            String cpf = resultSet.getString("cpf");
+            String sexo = resultSet.getString("sexo");
+            java.sql.Date dataNasc = resultSet.getDate("data_nasc");
+            String endereco = resultSet.getString("endereco");
+            String cidade = resultSet.getString("cidade");
+            String estado = resultSet.getString("estado");
+            String celular = resultSet.getString("celular");
+            java.sql.Date dataIngresso = resultSet.getDate("data_ingresso");
+            double salario = resultSet.getDouble("salario");
+            
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(id);
+            funcionario.setNome(nome_func);
+            funcionario.setCpf(cpf);
+            funcionario.setSexo(sexo);
+            funcionario.setData_nasc(dataNasc);
+            funcionario.setCelular(celular);
+            funcionario.setEmail(email);
+            funcionario.setEndereco(endereco);
+            funcionario.setCidade(cidade);
+            funcionario.setEstado(estado);
+            funcionario.setData_ingresso(dataIngresso);
+            funcionario.setSalario(salario);
+
+            funcionarios.add(funcionario);
+        }
+
+        return funcionarios;
     }
 }

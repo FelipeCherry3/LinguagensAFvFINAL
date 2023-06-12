@@ -91,6 +91,13 @@ public class FuncionariosTela extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         txtBuscarFunc = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(920, 630));
@@ -405,6 +412,51 @@ public class FuncionariosTela extends javax.swing.JFrame {
         getContentPane().add(jPanel2);
         jPanel2.setBounds(440, 30, 470, 550);
 
+        jMenu1.setText("Arquivo");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Menus");
+
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/addusuario.png"))); // NOI18N
+        jMenuItem1.setText("Funcionários");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/addusuario.png"))); // NOI18N
+        jMenuItem2.setText("Produtos");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/addusuario.png"))); // NOI18N
+        jMenuItem3.setText("Compras");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/addusuario.png"))); // NOI18N
+        jMenuItem4.setText("Usuarios");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         setSize(new java.awt.Dimension(929, 605));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -423,10 +475,10 @@ public class FuncionariosTela extends javax.swing.JFrame {
 
     private void btnCadastrar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrar2ActionPerformed
         Funcionario novoFuncionario = new Funcionario();
-        MySQL mysql = new MySQL("localhost:3306", "controltech2", "root", "Bico1346@");
+        MySQL mysql = new MySQL("localhost:3306", "controletech3", "root", "Bico1346@");
         mysql.conectaBanco();;
         
-        FuncionarioDAO funcDAO = new FuncionarioDAO(mysql);
+        FuncionarioDAO funcDAO = new FuncionarioDAO();
         novoFuncionario.setNome(textCadNome.getText());
         novoFuncionario.setEmail(textEmail.getText());
         novoFuncionario.setCpf(textCadCpf.getText());
@@ -477,9 +529,9 @@ public class FuncionariosTela extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         Funcionario f2 = new Funcionario();
-        MySQL mysql = new MySQL("localhost:3306", "controltech2", "root", "Bico1346@");
+        MySQL mysql = new MySQL("localhost:3306", "controletech3", "root", "Bico1346@");
         mysql.conectaBanco();
-        FuncionarioDAO funcDAO = new FuncionarioDAO(mysql);
+        FuncionarioDAO funcDAO = new FuncionarioDAO();
         try {
             f2 = funcDAO.buscarFuncionarioPorEmail(txtBuscarFunc.getText());
             jPanel3.setVisible(true);
@@ -506,9 +558,9 @@ public class FuncionariosTela extends javax.swing.JFrame {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
         Funcionario novoFuncionario = new Funcionario();
-        MySQL mysql = new MySQL("localhost:3306", "controltech2", "root", "Bico1346@");
+        MySQL mysql = new MySQL("localhost:3306", "controletech3", "root", "Bico1346@");
         mysql.conectaBanco();
-        FuncionarioDAO funcDAO = new FuncionarioDAO(mysql);
+        FuncionarioDAO funcDAO = new FuncionarioDAO();
 
         novoFuncionario.setEmail(txtBuscarFunc.getText());
         try {
@@ -537,10 +589,10 @@ public class FuncionariosTela extends javax.swing.JFrame {
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         // TODO add your handling code here:
         Funcionario novoFuncionario = new Funcionario();
-        MySQL mysql = new MySQL("localhost:3306", "controltech2", "root", "Bico1346@");
+        MySQL mysql = new MySQL("localhost:3306", "controletech3", "root", "Bico1346@");
         mysql.conectaBanco();;
 
-        FuncionarioDAO funcDAO = new FuncionarioDAO(mysql);
+        FuncionarioDAO funcDAO = new FuncionarioDAO();
 
         novoFuncionario.setNome(textBuscaNome.getText());
         novoFuncionario.setCpf(textBuscaCpf.getText());
@@ -597,6 +649,33 @@ public class FuncionariosTela extends javax.swing.JFrame {
     private void textBuscaCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textBuscaCpfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textBuscaCpfActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        FuncionariosTela ft = new FuncionariosTela();
+        ft.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        ProdutosTelaAF tf = new ProdutosTelaAF();
+        tf.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        Tela_de_compra tc = new Tela_de_compra();
+        tc.setVisible(true);
+        this.setVisible(false);        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        UsuariosTela ut = new UsuariosTela();
+        ut.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -666,6 +745,13 @@ public class FuncionariosTela extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

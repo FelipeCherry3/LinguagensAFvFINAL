@@ -122,5 +122,8 @@ public class Funcionario {
     public void setSalario(Double salario) {
         this.salario = salario;
     }
+    public String toString(){
+        return this.nome;
+    }
     
 }

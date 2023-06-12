@@ -19,6 +19,9 @@ public class Fornecedores {
     private String cnpj;
     private String descricao;
     private Date   data_contrato;
+    private String celular;
+    private String email;
+    
 
     public int getId() {
         return id;
@@ -62,5 +65,21 @@ public class Fornecedores {
     
     public String toString(){
         return this.nome_fornecedor;
+    }
+    
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
